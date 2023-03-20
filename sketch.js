@@ -1,7 +1,7 @@
 var ship, ship_img,shipRight_img,shipLeft_img;
 var ufo1,ufo1_img;
 var borderRight,borderLeft;
-var ufoGroup
+var ufoGroup;
 
 function preload(){
     ship_img = loadImage("assets/ship.png");
@@ -26,7 +26,6 @@ function setup(){
     ship.scale = 2;
 
     ufoGroup = new Group();
-
 
 }
 
@@ -61,14 +60,13 @@ function draw(){
     if(keyDown("space")){
         var bullets = createSprite(ship.position.x,ship.position.y,10,30);
         bullets.velocity.y = -8;
+        bullets.shapeColor=rgb(random(1,255),random(1,255),random(1,255));
         ship.depth = bullets.depth;
         ship.depth = ship.depth+1;
     }
 
-    if(ufoGroup.isTouching(borderRight)){
-        ufoGroup.setSpeedAndDirectionEach(1, 100);
-    }
-
+    ufoGroup.bounceOff(borderRight);
+    ufoGroup.bounceOff(borderLeft);
     drawSprites();
     spawnUfos();
 }
@@ -81,12 +79,13 @@ function changePosition(sprite,x,y){
 
 function spawnUfos(){
     if(frameCount%30 === 0){
-    ufo1 =createSprite(random(1,500),0,50,50);
-    ufo1.addImage("ufo1", ufo1_img);
-    ufo1.scale= 3
-    ufo1.velocity.y = random(1,3);
-    ufo1.velocity.x = random(-3,3);
-    ufoGroup.add(ufo1);
-    console.log(ufo1.velocity.y,ufo1.velocity.x);
+        ufo1 =createSprite(random(1,500),0,50,50);
+        ufo1.addImage("ufo1", ufo1_img);
+        ufo1.scale= 3
+        ufo1.velocity.y = random(1,3);
+        ufo1.velocity.x = random(-3,3);
+        ufo1.lifetime=200;
+        ufoGroup.add(ufo1);
+        console.log(ufo1.velocity.y,ufo1.velocity.x);
     }
 }
